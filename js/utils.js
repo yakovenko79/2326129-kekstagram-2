@@ -17,4 +17,8 @@ function getRandomElement(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-export {getRandomElement, getRandomNumber};
+function isEscapeKey(evt) {
+  return evt.key === 'Escape';
+}
+
+export {getRandomElement, getRandomNumber, isEscapeKey};
