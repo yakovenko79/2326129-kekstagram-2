@@ -7,13 +7,9 @@ const modalLikes = modal.querySelector('.likes-count');
 const modalDescription = modal.querySelector('.social__caption');
 const closePopupButton = modal.querySelector('.big-picture__cancel');
 const modalCommonCommentsAmount = modal.querySelector('.social__comment-total-count');
+const documentBody = document.body;
 
-
-function closeBigImage() {
-  closeBigImagePopup();
-}
-
-function pressEscKey() {
+function onDocumentKeydown() {
   if(isEscapeKey){
     closeBigImagePopup();
   }
@@ -22,24 +18,27 @@ function pressEscKey() {
 function closeBigImagePopup() {
   clearComments();
   modal.classList.add('hidden');
-  modal.removeEventListener('click', closeBigImage);
-  document.removeEventListener('keydown', pressEscKey);
+  documentBody.classList.remove('modal-open');
+  document.removeEventListener('keydown', onDocumentKeydown);
 }
 
-export function openPopup(photos, imageId){
-  const currentImage = photos.find((img) => img.id === parseInt(imageId, 10));
+function openPopup(currentImage){
   modalImage.src = currentImage.url;
   modalImage.alt = currentImage.description;
-  modalLikes.textContent = currentImage.likes;
+  modalLikes.textContent = currentImage.likes.toString();
   modalDescription.textContent = currentImage.description;
-  modalCommonCommentsAmount.textContent = currentImage.comments.length;
+  modalCommonCommentsAmount.textContent = currentImage.comments.length.toString();
 
   clearComments();
   createComments(currentImage.comments);
 
   modal.classList.remove('hidden');
-  document.body.classList.add('modal-open');
+  documentBody.classList.add('modal-open');
 
-  closePopupButton.addEventListener('click', closeBigImage);
-  document.addEventListener('keydown', pressEscKey);
+  closePopupButton.addEventListener('click', () => {
+    closeBigImagePopup();
+  });
+  document.addEventListener('keydown', onDocumentKeydown);
 }
+
+export { openPopup };
