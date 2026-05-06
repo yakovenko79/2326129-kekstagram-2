@@ -1,3 +1,5 @@
+import { openPopup } from './popup';
+
 const template = document.querySelector('#picture').content.querySelector('.picture');
 const pictures = document.querySelector('.pictures');
 
@@ -14,12 +16,22 @@ function createThumbnail (photo) {
   return thumbnail;
 }
 
+function attachEvents(photos) {
+  pictures.addEventListener('click' ,(evt) =>{
+    const picture = evt.target.closest('.picture');
+    if(picture) {
+      openPopup(photos.find((img) => img.id === parseInt(picture.dataset.id, 10)));
+    }
+  });
+}
+
 function createThumbnails(photos) {
   const fragment = document.createDocumentFragment();
   photos.forEach((image) => {
     fragment.append(createThumbnail(image));
   });
   pictures.append(fragment);
+  attachEvents(photos);
 }
 
 export { createThumbnails, pictures };
