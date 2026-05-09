@@ -8,7 +8,7 @@ const commentsLoader = modal.querySelector('.social__comments-loader');
 let currentAmountComments = 0;
 let comments = [];
 
-function onNextComment() {
+function loadComments() {
   const fragment = document.createDocumentFragment();
   const nextComments = comments.slice(currentAmountComments, currentAmountComments + COMMENTS_STEP);
   currentAmountComments += nextComments.length;
@@ -37,11 +37,15 @@ function clearComments() {
   commentsLoader.classList.remove('hidden');
 }
 
+function onCommentsLoaderClick(){
+  loadComments();
+}
+
 function createComments(currentComments) {
   comments = currentComments;
-  commentsLoader.removeEventListener('click', onNextComment);
-  commentsLoader.addEventListener('click', onNextComment);
-  commentsLoader.click();
+  loadComments();
 }
+
+commentsLoader.addEventListener('click', onCommentsLoaderClick);
 
 export { createComments, clearComments };
