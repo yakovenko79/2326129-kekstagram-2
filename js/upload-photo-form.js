@@ -11,14 +11,14 @@ const resetPhotoEditorFormButton = uploadForm.querySelector('.img-upload__cancel
 const hashtagInput = uploadForm.querySelector('.text__hashtags');
 const commentInput = uploadForm.querySelector('.text__description');
 
-function onCloseFormButton(){
+function onResetFormButton(){
   closePhotoEditorForm();
 }
 
-function onEscKeyDown(evt) {
+function onDocumentKeyDown(evt) {
   if(isEscapeKey(evt)){
     if(document.activeElement === hashtagInput || document.activeElement === commentInput){
-      evt.stopPropogation();
+      evt.stopPropagation();
     } else {
       uploadForm.reset();
       closePhotoEditorForm();
@@ -26,28 +26,30 @@ function onEscKeyDown(evt) {
   }
 }
 
+const pristine = new Pristine(uploadForm, {
+  classTo: 'img-upload__field-wrapper',
+  errorClass: 'img-upload__field-wrapper--error',
+  errorTextParent: 'img-upload__field-wrapper',
+});
+
 function closePhotoEditorForm(){
   photoEditorForm.classList.add('hidden');
   pageBody.classList.remove('modal-open');
-  resetPhotoEditorFormButton.removeEventListener('click', onCloseFormButton);
-  document.removeEventListener('keydown', onEscKeyDown);
+  resetPhotoEditorFormButton.removeEventListener('click', onResetFormButton);
+  document.removeEventListener('keydown', onDocumentKeyDown);
   uploadFileControl.value = '';
+  pristine.reset();
+
 }
 
 function initUploadModal() {
   uploadFileControl.addEventListener('change', () => {
     photoEditorForm.classList.remove('hidden');
     pageBody.classList.add('modal-open');
-    resetPhotoEditorFormButton.addEventListener('click', onCloseFormButton);
-    document.addEventListener('keydown', onEscKeyDown);
+    resetPhotoEditorFormButton.addEventListener('click', onResetFormButton);
+    document.addEventListener('keydown', onDocumentKeyDown);
   });
 }
-
-const pristine = new Pristine(uploadForm, {
-  classTo: 'img-upload__field-wrapper',
-  errorClass: 'img-upload__field-wrapper--error',
-  errorTextParent: 'img-upload__field-wrapper',
-});
 
 function onHashtagInput() {
   isHashtagValid(hashtagInput.value);
@@ -66,6 +68,5 @@ pristine.addValidator(hashtagInput, isHashtagValid, error, 2, false);
 hashtagInput.addEventListener('input', onHashtagInput);
 
 uploadForm.addEventListener('submit', onFormSubmit);
-
 
 export { initUploadModal };

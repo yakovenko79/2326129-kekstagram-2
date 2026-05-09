@@ -40,11 +40,11 @@ function isHashtagValid(value){
       error: `Хештег должен содержать не более ${MAX_HASHTAG_SYMBOLS} символов, включая "#"`
     },
     {
-      check: inputTextsArray.lenght > MAX_HASHTAGS,
+      check: inputTextsArray.length > MAX_HASHTAGS,
       error: `Максимально допустимое количество хештегов - ${MAX_HASHTAGS}`
     },
     {
-      check: inputTextsArray.some((item) => /^#[a-zа-яё0-9]{1, 19}$/i.test(item)),
+      check: inputTextsArray.some((item) => !/^#[a-zа-яё0-9]{1,19}$/i.test(item)),
       error: 'Хештег содержит недопустимые символы'
     }
   ];

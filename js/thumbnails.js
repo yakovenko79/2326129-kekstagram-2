@@ -34,4 +34,4 @@ function createThumbnails(photos) {
   attachEvents(photos);
 }
 
-export { createThumbnails, pictures };
+export { createThumbnails };
