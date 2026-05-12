@@ -2,6 +2,11 @@ import { isHashtagValid, error } from './hashtag-validator';
 import { isEscapeKey } from './utils';
 import { onEffectChange, resetFilter } from './slider-effect.js';
 
+const STEP = 25;
+const MIN_SCALE = 25;
+const MAX_SCALE = 100;
+
+
 const uploadForm = document.querySelector('.img-upload__form');
 const pageBody = document.body;
 
@@ -25,7 +30,7 @@ const scaleButtons = [
   { button: increaseScaleButton, direction: 1 }
 ];
 
-function onResetFormButton(){
+function onResetFormButtonClick(){
   closePhotoEditorForm();
 }
 
@@ -49,10 +54,10 @@ const pristine = new Pristine(uploadForm, {
 function closePhotoEditorForm(){
   photoEditorForm.classList.add('hidden');
   pageBody.classList.remove('modal-open');
-  resetPhotoEditorFormButton.removeEventListener('click', onResetFormButton);
+  resetPhotoEditorFormButton.removeEventListener('click', onResetFormButtonClick);
   document.removeEventListener('keydown', onDocumentKeyDown);
-  uploadFileControl.value = '';
   pristine.reset();
+  uploadForm.reset();
   resetFilter();
 
 }
@@ -60,32 +65,28 @@ function closePhotoEditorForm(){
 function initUploadModal() {
   uploadFileControl.addEventListener('change', () => {
     resetFilter();
-    currentScaleValue = 100;
-    scaleValue.value = '100%';
+    currentScaleValue = MAX_SCALE;
     uploadImagePreview.style.transform = 'scale(1)';
-    decreaseScaleButton.disabled = false;
-    increaseScaleButton.disabled = true;
     photoEditorForm.classList.remove('hidden');
     pageBody.classList.add('modal-open');
-    resetPhotoEditorFormButton.addEventListener('click', onResetFormButton);
+    resetPhotoEditorFormButton.addEventListener('click', onResetFormButtonClick);
     document.addEventListener('keydown', onDocumentKeyDown);
   });
 }
 
 function onScaleImage(direction) {
-  const step = 25;
-  let newValue = currentScaleValue + step * direction;
-  if(newValue < 25) {
-    newValue = 25;
+  let newValue = currentScaleValue + STEP * direction;
+  if(newValue < MIN_SCALE) {
+    newValue = MIN_SCALE;
+  } else if(newValue > MAX_SCALE){
+    newValue = MAX_SCALE;
   }
-  if(newValue > 100){
-    newValue = 100;
-  }
+
   currentScaleValue = newValue;
   scaleValue.value = `${currentScaleValue}%`;
-  uploadImagePreview.style.transform = `scale(${currentScaleValue / 100})`;
-  decreaseScaleButton.disabled = (currentScaleValue === 25);
-  increaseScaleButton.disabled = (currentScaleValue === 100);
+  uploadImagePreview.style.transform = `scale(${currentScaleValue / MAX_SCALE})`;
+  decreaseScaleButton.disabled = (currentScaleValue === MIN_SCALE);
+  increaseScaleButton.disabled = (currentScaleValue === MAX_SCALE);
 }
 
 function onHashtagInput() {
@@ -104,7 +105,7 @@ scaleButtons.forEach(({button, direction}) => {
   button.addEventListener('click', () => onScaleImage(direction));
 });
 
-pristine.addValidator(hashtagInput, isHashtagValid, error, 2, false);
+pristine.addValidator(hashtagInput, isHashtagValid, error);
 
 hashtagInput.addEventListener('input', onHashtagInput);
 
@@ -112,4 +113,4 @@ uploadForm.addEventListener('submit', onFormSubmit);
 
 effectsList.addEventListener('change', onEffectChange);
 
-export { initUploadModal };
+export { initUploadModal, uploadForm };
