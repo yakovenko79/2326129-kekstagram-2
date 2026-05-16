@@ -1,8 +1,15 @@
 import { createThumbnails } from './thumbnails';
-import { getPhotos } from './generate-data.js';
 import { initUploadModal } from './upload-photo-form.js';
+import { ErrorText, getData, showDataError } from './api.js';
 
-const photos = getPhotos();
+async function init() {
+  try {
+    const data = await getData();
+    createThumbnails(data);
+  } catch (error) {
+    showDataError(ErrorText.GET_DATA);
+  }
+  initUploadModal();
+}
 
-createThumbnails(photos);
-initUploadModal();
+init();
