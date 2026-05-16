@@ -134,8 +134,9 @@ function onFormSubmit(evt) {
   if(pristine.validate()) {
     hashtagInput.value = hashtagInput.value.trim().replaceAll(/\s+/g, ' ');
     blockSubmitButton();
-    sendData(new FormData(evt.target)).then((appendNotification(templateSuccess)))
+    sendData(new FormData(evt.target))
       .then(() => {
+        appendNotification(templateSuccess);
         closePhotoEditorForm();
       })
       .catch(() => {

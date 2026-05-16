@@ -8,11 +8,11 @@ function error() {
   return errorMessage;
 }
 
-function isHashtagValid(value){
+function isHashtagValid(value = null){
   errorMessage = '';
   const inputText = value.toLowerCase().trim();
 
-  if(inputText.lenght === 0){
+  if(inputText.trim().length === 0){
     return true;
   }
 
