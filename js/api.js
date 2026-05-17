@@ -1,5 +1,5 @@
 const BASE_URL = 'https://31.javascript.htmlacademy.pro/kekstagram';
-
+const ERROR_MESSAGE_TIMEOUT = 5000;
 
 const errorTemplate = document.querySelector('#data-error');
 
@@ -25,7 +25,7 @@ function showDataError(message) {
   document.body.appendChild(errorMessage);
   setTimeout(() => {
     errorMessage.remove();
-  }, 5000);
+  }, ERROR_MESSAGE_TIMEOUT);
 }
 
 function load(route, errorText, method = Method.GET, body = null){

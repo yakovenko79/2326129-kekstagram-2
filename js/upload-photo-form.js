@@ -12,7 +12,6 @@ const SubmitButtonText = {
   SENDING: 'Сохраняю...'
 };
 
-
 const uploadForm = document.querySelector('.img-upload__form');
 const pageBody = document.body;
 
@@ -96,7 +95,6 @@ function closePhotoEditorForm(){
   pristine.reset();
   uploadForm.reset();
   resetFilter();
-
 }
 
 function initUploadModal() {

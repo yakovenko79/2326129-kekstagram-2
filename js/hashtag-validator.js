@@ -1,7 +1,6 @@
 const MAX_HASHTAG_SYMBOLS = 20;
 const MAX_HASHTAGS = 5;
 
-
 let errorMessage = '';
 
 function error() {
