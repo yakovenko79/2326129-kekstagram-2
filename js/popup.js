@@ -7,6 +7,7 @@ const modalLikes = modal.querySelector('.likes-count');
 const modalDescription = modal.querySelector('.social__caption');
 const closePopupButton = modal.querySelector('.big-picture__cancel');
 const modalCommonCommentsAmount = modal.querySelector('.social__comment-total-count');
+const messageInputField = modal.querySelector('.social__footer-text');
 const documentBody = document.body;
 
 function onDocumentKeydown() {
@@ -40,5 +41,9 @@ function openPopup(currentImage){
   });
   document.addEventListener('keydown', onDocumentKeydown);
 }
+
+messageInputField.addEventListener('keydown', (evt) => {
+  evt.stopPropagation();
+});
 
 export { openPopup };
