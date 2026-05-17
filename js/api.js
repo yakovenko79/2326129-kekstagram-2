@@ -1,5 +1,6 @@
 const BASE_URL = 'https://31.javascript.htmlacademy.pro/kekstagram';
 
+
 const errorTemplate = document.querySelector('#data-error');
 
 const Routes = {
@@ -39,7 +40,6 @@ function load(route, errorText, method = Method.GET, body = null){
       throw err;
     });
 }
-
 
 function getData(){
   return load(Routes.GET_DATA, ErrorText.GET_DATA);
