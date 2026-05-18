@@ -1,3 +1,5 @@
+const TIMEOUT_DELAY = 500;
+
 function getRandomNumber(minValue, maxValue) {
   const lower = Math.ceil(Math.min(minValue, maxValue));
   const upper = Math.floor(Math.max(minValue, maxValue));
@@ -21,4 +23,12 @@ function isEscapeKey(evt) {
   return evt.key === 'Escape';
 }
 
-export {getRandomElement, getRandomNumber, isEscapeKey};
+function debounce (callback, timeoutDelay = TIMEOUT_DELAY) {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+}
+
+export {getRandomElement, getRandomNumber, isEscapeKey, debounce };
