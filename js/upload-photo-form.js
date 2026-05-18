@@ -3,6 +3,7 @@ import { isEscapeKey } from './utils';
 import { onEffectChange, resetFilter } from './slider-effect.js';
 import { ErrorText, sendData, showDataError } from './api.js';
 
+const IMAGE_TYPES = ['.jpg', '.png', '.jpeg'];
 const STEP = 25;
 const MIN_SCALE = 25;
 const MAX_SCALE = 100;
@@ -30,6 +31,7 @@ const effectsList = uploadForm.querySelector('.effects__list');
 const submitButton = uploadForm.querySelector('.img-upload__submit');
 const templateSuccess = document.querySelector('#success').content;
 const templateError = document.querySelector('#error').content;
+const previewEffects = document.querySelectorAll('.effects__preview');
 
 let currentScaleValue = parseInt(scaleValue.value.slice(0, -1), 10);
 
@@ -37,6 +39,21 @@ const scaleButtons = [
   { button: decreaseScaleButton, direction: -1 },
   { button: increaseScaleButton, direction: 1 }
 ];
+
+function onImageInput(file) {
+  const fileName = file.name.toLowerCase();
+  const matches = IMAGE_TYPES.some((item) => fileName.endsWith(item));
+  if(!matches) {
+    showDataError(ErrorText.SEND_INVALID_DATA);
+    return false;
+  }
+  const url = URL.createObjectURL(file);
+  uploadImagePreview.src = url;
+  previewEffects.forEach((item) => {
+    item.style.backgroundImage = `url(${url})`;
+  });
+  return true;
+}
 
 function onResetFormButtonClick(){
   closePhotoEditorForm();
@@ -99,6 +116,15 @@ function closePhotoEditorForm(){
 
 function initUploadModal() {
   uploadFileControl.addEventListener('change', () => {
+    const file = uploadFileControl.files[0];
+    if(!file){
+      return;
+    }
+    const isValid = onImageInput(file);
+    if(!isValid) {
+      uploadFileControl.value = '';
+      return;
+    }
     resetFilter();
     currentScaleValue = MAX_SCALE;
     uploadImagePreview.style.transform = 'scale(1)';

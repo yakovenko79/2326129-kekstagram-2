@@ -2,6 +2,7 @@ import { openPopup } from './popup';
 
 const template = document.querySelector('#picture').content.querySelector('.picture');
 const pictures = document.querySelector('.pictures');
+let currentPhotos = [];
 
 function createThumbnail (photo) {
   const thumbnail = template.cloneNode(true);
@@ -16,22 +17,28 @@ function createThumbnail (photo) {
   return thumbnail;
 }
 
-function attachEvents(photos) {
-  pictures.addEventListener('click' ,(evt) =>{
-    const picture = evt.target.closest('.picture');
-    if(picture) {
-      openPopup(photos.find((img) => img.id === parseInt(picture.dataset.id, 10)));
+function onPicturesClick(evt) {
+  const picture = evt.target.closest('.picture');
+  if(picture) {
+    const id = parseInt(picture.dataset.id, 10);
+    const photo = currentPhotos.find((img) => img.id === id);
+    if(photo){
+      openPopup(photo);
     }
-  });
+  }
 }
 
+pictures.addEventListener('click', onPicturesClick);
+
 function createThumbnails(photos) {
+  const oldPhotos = pictures.querySelectorAll('.picture');
+  oldPhotos.forEach((el) => el.remove());
+  currentPhotos = photos;
   const fragment = document.createDocumentFragment();
   photos.forEach((image) => {
     fragment.append(createThumbnail(image));
   });
   pictures.append(fragment);
-  attachEvents(photos);
 }
 
 export { createThumbnails };
