@@ -136,13 +136,10 @@ function initUploadModal() {
 }
 
 function onScaleImage(direction) {
-  let newValue = currentScaleValue + STEP * direction;
-  if(newValue < MIN_SCALE) {
-    newValue = MIN_SCALE;
-  } else if (newValue > MAX_SCALE) {
-    newValue = MAX_SCALE;
+  const newValue = currentScaleValue + STEP * direction;
+  if(newValue >= MIN_SCALE && newValue <= MAX_SCALE) {
+    currentScaleValue = newValue;
   }
-  currentScaleValue = newValue;
   scaleValue.value = `${currentScaleValue}%`;
   uploadImagePreview.style.transform = `scale(${currentScaleValue / MAX_SCALE})`;
   decreaseScaleButton.disabled = (currentScaleValue === MIN_SCALE);

@@ -28,11 +28,8 @@ function onPicturesClick(evt) {
   }
 }
 
-pictures.addEventListener('click', onPicturesClick);
-
 function createThumbnails(photos) {
-  const oldPhotos = pictures.querySelectorAll('.picture');
-  oldPhotos.forEach((el) => el.remove());
+  pictures.querySelectorAll('.picture').forEach((el) => el.remove());
   currentPhotos = photos;
   const fragment = document.createDocumentFragment();
   photos.forEach((image) => {
@@ -40,5 +37,7 @@ function createThumbnails(photos) {
   });
   pictures.append(fragment);
 }
+
+pictures.addEventListener('click', onPicturesClick);
 
 export { createThumbnails };
