@@ -13,8 +13,8 @@ const Filters = {
 let currentFilter = Filters.DEFAULT;
 const filters = document.querySelector('.img-filters');
 let currentActive = filters.querySelector(`.${ACTIVE_FILTER_BUTTON}`);
-let pictures = [];
 
+let pictures = [];
 let randomCache = [];
 
 function getRandomPhotos() {
